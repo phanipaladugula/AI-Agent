@@ -3,8 +3,7 @@ uvicorn==0.38.0
 
 SQLAlchemy==2.0.44
 sqlmodel==0.0.18
-psycopg==3.2.12
-psycopg2-binary==3.2.11
+psycopg==3.2.12 
 aiosqlite==0.21.0
 
 python-dotenv==1.2.1
