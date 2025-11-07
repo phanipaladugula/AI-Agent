@@ -7,11 +7,16 @@ from jose import JWTError,jwt
 from database import get_db, User, Expenses, UserCreate,chat, AddExpense, ExpenseOut, Base, engine,update_expenses,Messages,Delete_Multiple,RegisterStep1,RegisterStep2
 from authorization import hash_password, verify_password, create_access_token,secret_key,algorithm,generate_otp,send_otp_email,verify_otp
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-import os
+import os # <-- Important: import os
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 load_dotenv()
-orging=["*"]
+
+# --- FIX START: Read CORS origin from environment variable for security ---
+# Reads a comma-separated list of origins, defaults to '*' for local testing.
+cors_origin_env = os.getenv("CORS_ORIGIN", "*")
+orging = [o.strip() for o in cors_origin_env.split(',')]
+# --- FIX END ---
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,7 +26,7 @@ app = FastAPI(title="Expense Tracker")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=orging,
+    allow_origins=orging, # Now uses the configured environment variable list
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
